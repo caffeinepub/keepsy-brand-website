@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.25rem;
+
+    /* Keepsy palette — OKLCH L C H */
+    --background: 0.951 0.018 85; /* ivory #F6F1E7 */
+    --foreground: 0.2 0.018 42; /* charcoal #2B2420 */
+    --card: 0.975 0.014 85; /* cream #FBF8F2 */
+    --card-foreground: 0.2 0.018 42;
+    --popover: 0.975 0.014 85;
+    --popover-foreground: 0.2 0.018 42;
+    --primary: 0.68 0.095 75; /* gold #B79B55 */
+    --primary-foreground: 0.98 0 0; /* white */
+    --secondary: 0.86 0.042 20; /* blush #E7C9C5 */
+    --secondary-foreground: 0.2 0.018 42;
+    --muted: 0.93 0.016 70;
+    --muted-foreground: 0.45 0.024 55; /* taupe #6D625A */
+    --accent: 0.62 0.095 72; /* gold-dark #A98B4B */
+    --accent-foreground: 0.98 0 0;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.9 0.018 65; /* divider #E6DED2 */
+    --input: 0.9 0.018 65;
+    --ring: 0.68 0.095 75;
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+    --sidebar: 0.975 0.014 85;
+    --sidebar-foreground: 0.2 0.018 42;
+    --sidebar-primary: 0.68 0.095 75;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.86 0.042 20;
+    --sidebar-accent-foreground: 0.2 0.018 42;
+    --sidebar-border: 0.9 0.018 65;
+    --sidebar-ring: 0.68 0.095 75;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+}
