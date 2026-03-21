@@ -19,7 +19,7 @@ const products: Record<
     id: "bracelet",
     name: "Memory Bracelet",
     price: 899,
-    image: "/images/bracelet.jpeg",
+    image: "/assets/uploads/bracelet-2.jpeg",
     description:
       "Our signature Memory Bracelet is handcrafted from premium resin, capturing your chosen name, date, or message in a timeless wearable keepsake. Each piece is made-to-order in our Delhi studio.",
     category: "Bracelets",
@@ -28,7 +28,7 @@ const products: Record<
     id: "earrings",
     name: "Bloom Earrings",
     price: 699,
-    image: "/images/Earring.jpeg",
+    image: "/assets/uploads/Earring-4.jpeg",
     description:
       "The Bloom Earrings are a celebration of delicate beauty. Crafted from high-quality resin with pressed botanicals and your personal touch, these earrings are as unique as the memories they carry.",
     category: "Earrings",
@@ -37,7 +37,7 @@ const products: Record<
     id: "custom-set",
     name: "Custom Keepsake Set",
     price: 1499,
-    image: "",
+    image: "/assets/generated/custom-keepsake-set.dim_800x600.jpg",
     description:
       "A complete set — bracelet and earring pair — fully customized with your name, special date, and a heartfelt message. The perfect gift for someone irreplaceable.",
     category: "Bracelets",
@@ -46,7 +46,7 @@ const products: Record<
     id: "rose-bracelet",
     name: "Rose Memory Bracelet",
     price: 999,
-    image: "/images/bracelet.jpeg",
+    image: "/assets/generated/rose-memory-bracelet.dim_800x600.jpg",
     description:
       "The Rose Memory Bracelet features a warm blush resin setting with real dried rose petals encased inside. Add a name or date to make it truly unforgettable.",
     category: "Bracelets",
@@ -55,7 +55,7 @@ const products: Record<
     id: "pearl-earrings",
     name: "Pearl Drop Earrings",
     price: 799,
-    image: "/images/Earring.jpeg",
+    image: "/assets/generated/pearl-drop-earrings.dim_800x600.jpg",
     description:
       "Elegant teardrop earrings with a pearl-white resin finish. Light, comfortable, and endlessly wearable — customize with initials or a meaningful date.",
     category: "Earrings",

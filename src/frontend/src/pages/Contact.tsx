@@ -47,10 +47,10 @@ export default function Contact() {
                 <div>
                   <p className="font-medium text-charcoal text-sm">Email Us</p>
                   <a
-                    href="mailto:hello@keepsy.in"
+                    href="mailto:amanraj933420@gmail.com"
                     className="text-gold text-sm hover:underline"
                   >
-                    hello@keepsy.in
+                    amanraj933420@gmail.com
                   </a>
                 </div>
               </div>

@@ -7,35 +7,35 @@ const allProducts = [
     id: "bracelet",
     name: "Memory Bracelet",
     price: 899,
-    image: "/images/bracelet.jpeg",
+    image: "/assets/uploads/bracelet-2.jpeg",
     category: "Bracelets",
   },
   {
     id: "earrings",
     name: "Bloom Earrings",
     price: 699,
-    image: "/images/Earring.jpeg",
+    image: "/assets/uploads/Earring-4.jpeg",
     category: "Earrings",
   },
   {
     id: "custom-set",
     name: "Custom Keepsake Set",
     price: 1499,
-    image: "",
+    image: "/assets/generated/custom-keepsake-set.dim_800x600.jpg",
     category: "Bracelets",
   },
   {
     id: "rose-bracelet",
     name: "Rose Memory Bracelet",
     price: 999,
-    image: "/images/bracelet.jpeg",
+    image: "/assets/generated/rose-memory-bracelet.dim_800x600.jpg",
     category: "Bracelets",
   },
   {
     id: "pearl-earrings",
     name: "Pearl Drop Earrings",
     price: 799,
-    image: "/images/Earring.jpeg",
+    image: "/assets/generated/pearl-drop-earrings.dim_800x600.jpg",
     category: "Earrings",
   },
 ];
@@ -137,17 +137,11 @@ export default function Shop() {
                   data-ocid={`shop.item.${i + 1}`}
                 >
                   <div className="overflow-hidden rounded-t-sm">
-                    {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="w-full h-64 bg-blush flex items-center justify-center">
-                        <span className="text-6xl">✦</span>
-                      </div>
-                    )}
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                   </div>
                   <div className="p-5">
                     <h3 className="font-serif text-lg font-semibold text-charcoal">

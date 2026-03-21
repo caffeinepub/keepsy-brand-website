@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Copy, Package } from "lucide-react";
+import { Check, Copy, MessageCircle, Package } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "../components/AnimatedSection";
 import { useCart } from "../context/CartContext";
@@ -9,6 +9,16 @@ type CardTab = "cards" | "netbanking" | "wallets";
 
 const banks = ["SBI", "HDFC", "ICICI", "Axis", "Kotak"];
 const wallets = ["Paytm", "PhonePe", "Google Pay"];
+
+// Owner's WhatsApp number (country code + number, no spaces or +)
+const OWNER_WHATSAPP = "918083675985";
+
+const WhatsAppNote = () => (
+  <p className="text-xs text-taupe text-center mt-2">
+    <span className="text-gold">★</span> Only after the confirmation of payment
+    on WhatsApp, the order will be acknowledged.
+  </p>
+);
 
 export default function Checkout() {
   const { items, totalPrice, removeItem } = useCart();
@@ -41,6 +51,48 @@ export default function Checkout() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  };
+
+  const buildWhatsAppMessage = (method: string) => {
+    const lines: string[] = [];
+    lines.push("🛍️ *New Order - Keepsy*");
+    lines.push("");
+    lines.push("*Order Details:*");
+    for (const item of items) {
+      lines.push(
+        `• ${item.name} × ${item.quantity} — ₹${item.price * item.quantity}`,
+      );
+      if (item.customization?.name)
+        lines.push(`  Name engraving: ${item.customization.name}`);
+      if (item.customization?.date)
+        lines.push(`  Date: ${item.customization.date}`);
+    }
+    lines.push("");
+    lines.push(
+      `Subtotal: ₹${totalPrice}  |  Shipping: ${shipping === 0 ? "Free" : `₹${shipping}`}`,
+    );
+    lines.push(`*Total Amount: ₹${total}*`);
+    lines.push("");
+    lines.push(`*Payment Method:* ${method}`);
+    if (method === "Cash on Delivery" && codAddress.name) {
+      lines.push("");
+      lines.push("*Delivery Address:*");
+      if (codAddress.name) lines.push(`Name: ${codAddress.name}`);
+      if (codAddress.address) lines.push(`Address: ${codAddress.address}`);
+      if (codAddress.city) lines.push(`City: ${codAddress.city}`);
+      if (codAddress.state) lines.push(`State: ${codAddress.state}`);
+      if (codAddress.pincode) lines.push(`Pincode: ${codAddress.pincode}`);
+      if (codAddress.phone) lines.push(`Phone: ${codAddress.phone}`);
+    }
+    lines.push("");
+    lines.push("Please confirm this order. Thank you! 🙏");
+    return encodeURIComponent(lines.join("\n"));
+  };
+
+  const openWhatsApp = (method: string) => {
+    const msg = buildWhatsAppMessage(method);
+    window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, "_blank");
+    setOrderPlaced(true);
   };
 
   const inputClass =
@@ -145,14 +197,20 @@ export default function Checkout() {
                         ₹{total}
                       </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setOrderPlaced(true)}
-                      data-ocid="checkout.primary_button"
-                      className="w-full bg-gold hover:bg-gold-dark text-white font-medium py-4 rounded-sm transition-colors text-sm"
-                    >
-                      I&rsquo;ve Paid ₹{total}
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          openWhatsApp("UPI — amanraj933420-1@oksbi")
+                        }
+                        data-ocid="checkout.primary_button"
+                        className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium py-4 rounded-sm transition-colors text-sm flex items-center justify-center gap-2"
+                      >
+                        <MessageCircle size={18} />
+                        I&rsquo;ve Paid ₹{total} — Confirm via WhatsApp
+                      </button>
+                      <WhatsAppNote />
+                    </div>
                   </div>
                 )}
 
@@ -227,14 +285,18 @@ export default function Checkout() {
                             maxLength={4}
                           />
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setOrderPlaced(true)}
-                          data-ocid="checkout.primary_button"
-                          className="w-full bg-gold hover:bg-gold-dark text-white font-medium py-4 rounded-sm transition-colors text-sm"
-                        >
-                          Pay ₹{total}
-                        </button>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => openWhatsApp("Card Payment")}
+                            data-ocid="checkout.primary_button"
+                            className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium py-4 rounded-sm transition-colors text-sm flex items-center justify-center gap-2"
+                          >
+                            <MessageCircle size={18} />
+                            Pay ₹{total} — Confirm via WhatsApp
+                          </button>
+                          <WhatsAppNote />
+                        </div>
                       </div>
                     )}
                     {cardTab === "netbanking" && (
@@ -258,14 +320,22 @@ export default function Checkout() {
                             </span>
                           </label>
                         ))}
-                        <button
-                          type="button"
-                          onClick={() => setOrderPlaced(true)}
-                          data-ocid="checkout.primary_button"
-                          className="w-full bg-gold hover:bg-gold-dark text-white font-medium py-4 rounded-sm transition-colors text-sm mt-2"
-                        >
-                          Proceed to Bank
-                        </button>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              openWhatsApp(
+                                `Net Banking — ${bank || "selected bank"}`,
+                              )
+                            }
+                            data-ocid="checkout.primary_button"
+                            className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium py-4 rounded-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2"
+                          >
+                            <MessageCircle size={18} />
+                            Proceed — Confirm via WhatsApp
+                          </button>
+                          <WhatsAppNote />
+                        </div>
                       </div>
                     )}
                     {cardTab === "wallets" && (
@@ -289,14 +359,22 @@ export default function Checkout() {
                             </span>
                           </label>
                         ))}
-                        <button
-                          type="button"
-                          onClick={() => setOrderPlaced(true)}
-                          data-ocid="checkout.primary_button"
-                          className="w-full bg-gold hover:bg-gold-dark text-white font-medium py-4 rounded-sm transition-colors text-sm mt-2"
-                        >
-                          Pay with Wallet
-                        </button>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              openWhatsApp(
+                                `Wallet — ${wallet || "selected wallet"}`,
+                              )
+                            }
+                            data-ocid="checkout.primary_button"
+                            className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium py-4 rounded-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2"
+                          >
+                            <MessageCircle size={18} />
+                            Pay with Wallet — Confirm via WhatsApp
+                          </button>
+                          <WhatsAppNote />
+                        </div>
                       </div>
                     )}
                   </div>
@@ -385,14 +463,18 @@ export default function Checkout() {
                         </div>
                       ))}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setOrderPlaced(true)}
-                      data-ocid="checkout.primary_button"
-                      className="w-full bg-gold hover:bg-gold-dark text-white font-medium py-4 rounded-sm transition-colors text-sm"
-                    >
-                      Place Order &mdash; ₹{total}
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => openWhatsApp("Cash on Delivery")}
+                        data-ocid="checkout.primary_button"
+                        className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium py-4 rounded-sm transition-colors text-sm flex items-center justify-center gap-2"
+                      >
+                        <MessageCircle size={18} />
+                        Place Order ₹{total} — Confirm via WhatsApp
+                      </button>
+                      <WhatsAppNote />
+                    </div>
                   </div>
                 )}
               </div>
