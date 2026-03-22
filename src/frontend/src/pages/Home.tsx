@@ -295,9 +295,9 @@ export default function Home() {
               <p className="text-taupe leading-relaxed mb-4">
                 Keepsy was born when two friends — Aman and Suyash — searched
                 for something to hold a memory close and found nothing truly
-                meaningful. So they built it themselves. What began in a small
-                Delhi kitchen became a brand built entirely on the belief that
-                jewelry should mean something.
+                meaningful. So they built it themselves. What began as a hobby
+                became a brand built entirely on the belief that jewelry should
+                mean something.
               </p>
               <p className="text-taupe leading-relaxed mb-8">
                 Today, every Keepsy piece is handcrafted in Delhi with love,

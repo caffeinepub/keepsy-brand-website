@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Copy, MessageCircle, Package } from "lucide-react";
+import { Check, Copy, MapPin, MessageCircle, Package } from "lucide-react";
 import { useState } from "react";
 import AnimatedSection from "../components/AnimatedSection";
 import { useCart } from "../context/CartContext";
@@ -10,7 +10,6 @@ type CardTab = "cards" | "netbanking" | "wallets";
 const banks = ["SBI", "HDFC", "ICICI", "Axis", "Kotak"];
 const wallets = ["Paytm", "PhonePe", "Google Pay"];
 
-// Owner's WhatsApp number (country code + number, no spaces or +)
 const OWNER_WHATSAPP = "918083675985";
 
 const WhatsAppNote = () => (
@@ -19,6 +18,34 @@ const WhatsAppNote = () => (
     on WhatsApp, the order will be acknowledged.
   </p>
 );
+
+type Address = {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  phone: string;
+};
+
+const addressFields: {
+  key: keyof Address;
+  label: string;
+  type: string;
+  placeholder: string;
+}[] = [
+  { key: "name", label: "Full Name", type: "text", placeholder: "Your name" },
+  {
+    key: "address",
+    label: "Address",
+    type: "text",
+    placeholder: "Street, Area, Landmark",
+  },
+  { key: "city", label: "City", type: "text", placeholder: "Delhi" },
+  { key: "state", label: "State", type: "text", placeholder: "Delhi" },
+  { key: "pincode", label: "Pincode", type: "text", placeholder: "110001" },
+  { key: "phone", label: "Phone", type: "tel", placeholder: "+91 98765 43210" },
+];
 
 export default function Checkout() {
   const { items, totalPrice, removeItem } = useCart();
@@ -33,7 +60,7 @@ export default function Checkout() {
     expiry: "",
     cvv: "",
   });
-  const [codAddress, setCodAddress] = useState({
+  const [deliveryAddress, setDeliveryAddress] = useState<Address>({
     name: "",
     address: "",
     city: "",
@@ -74,16 +101,16 @@ export default function Checkout() {
     lines.push(`*Total Amount: ₹${total}*`);
     lines.push("");
     lines.push(`*Payment Method:* ${method}`);
-    if (method === "Cash on Delivery" && codAddress.name) {
-      lines.push("");
-      lines.push("*Delivery Address:*");
-      if (codAddress.name) lines.push(`Name: ${codAddress.name}`);
-      if (codAddress.address) lines.push(`Address: ${codAddress.address}`);
-      if (codAddress.city) lines.push(`City: ${codAddress.city}`);
-      if (codAddress.state) lines.push(`State: ${codAddress.state}`);
-      if (codAddress.pincode) lines.push(`Pincode: ${codAddress.pincode}`);
-      if (codAddress.phone) lines.push(`Phone: ${codAddress.phone}`);
-    }
+    lines.push("");
+    lines.push("*Delivery Address:*");
+    if (deliveryAddress.name) lines.push(`Name: ${deliveryAddress.name}`);
+    if (deliveryAddress.address)
+      lines.push(`Address: ${deliveryAddress.address}`);
+    if (deliveryAddress.city) lines.push(`City: ${deliveryAddress.city}`);
+    if (deliveryAddress.state) lines.push(`State: ${deliveryAddress.state}`);
+    if (deliveryAddress.pincode)
+      lines.push(`Pincode: ${deliveryAddress.pincode}`);
+    if (deliveryAddress.phone) lines.push(`Phone: ${deliveryAddress.phone}`);
     lines.push("");
     lines.push("Please confirm this order. Thank you! 🙏");
     return encodeURIComponent(lines.join("\n"));
@@ -97,6 +124,36 @@ export default function Checkout() {
 
   const inputClass =
     "w-full bg-ivory border border-divider rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold text-charcoal placeholder-taupe text-sm";
+
+  const DeliveryAddressForm = () => (
+    <div className="space-y-4 mt-6 pt-6 border-t border-divider">
+      <div className="flex items-center gap-2 mb-2">
+        <MapPin size={16} className="text-gold" />
+        <h3 className="font-medium text-charcoal text-sm">Delivery Address</h3>
+      </div>
+      {addressFields.map((field) => (
+        <div key={field.key}>
+          <label
+            className="block text-xs font-medium text-taupe mb-1"
+            htmlFor={`addr-${field.key}`}
+          >
+            {field.label}
+          </label>
+          <input
+            id={`addr-${field.key}`}
+            type={field.type}
+            placeholder={field.placeholder}
+            value={deliveryAddress[field.key]}
+            onChange={(e) =>
+              setDeliveryAddress((a) => ({ ...a, [field.key]: e.target.value }))
+            }
+            data-ocid="checkout.input"
+            className={inputClass}
+          />
+        </div>
+      ))}
+    </div>
+  );
 
   if (orderPlaced) {
     return (
@@ -197,7 +254,8 @@ export default function Checkout() {
                         ₹{total}
                       </p>
                     </div>
-                    <div>
+                    <DeliveryAddressForm />
+                    <div className="pt-2">
                       <button
                         type="button"
                         onClick={() =>
@@ -285,6 +343,7 @@ export default function Checkout() {
                             maxLength={4}
                           />
                         </div>
+                        <DeliveryAddressForm />
                         <div>
                           <button
                             type="button"
@@ -320,6 +379,7 @@ export default function Checkout() {
                             </span>
                           </label>
                         ))}
+                        <DeliveryAddressForm />
                         <div>
                           <button
                             type="button"
@@ -359,6 +419,7 @@ export default function Checkout() {
                             </span>
                           </label>
                         ))}
+                        <DeliveryAddressForm />
                         <div>
                           <button
                             type="button"
@@ -393,76 +454,7 @@ export default function Checkout() {
                         </p>
                       </div>
                     </div>
-                    <div className="space-y-4">
-                      {(
-                        [
-                          {
-                            key: "name",
-                            label: "Full Name",
-                            type: "text",
-                            placeholder: "Your name",
-                          },
-                          {
-                            key: "address",
-                            label: "Address",
-                            type: "text",
-                            placeholder: "Street, Area",
-                          },
-                          {
-                            key: "city",
-                            label: "City",
-                            type: "text",
-                            placeholder: "Delhi",
-                          },
-                          {
-                            key: "state",
-                            label: "State",
-                            type: "text",
-                            placeholder: "Delhi",
-                          },
-                          {
-                            key: "pincode",
-                            label: "Pincode",
-                            type: "text",
-                            placeholder: "110001",
-                          },
-                          {
-                            key: "phone",
-                            label: "Phone",
-                            type: "tel",
-                            placeholder: "+91 98765 43210",
-                          },
-                        ] as {
-                          key: keyof typeof codAddress;
-                          label: string;
-                          type: string;
-                          placeholder: string;
-                        }[]
-                      ).map((field) => (
-                        <div key={field.key}>
-                          <label
-                            className="block text-sm font-medium text-charcoal mb-1.5"
-                            htmlFor={`cod-${field.key}`}
-                          >
-                            {field.label}
-                          </label>
-                          <input
-                            id={`cod-${field.key}`}
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            value={codAddress[field.key]}
-                            onChange={(e) =>
-                              setCodAddress((a) => ({
-                                ...a,
-                                [field.key]: e.target.value,
-                              }))
-                            }
-                            data-ocid="checkout.input"
-                            className={inputClass}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                    <DeliveryAddressForm />
                     <div>
                       <button
                         type="button"

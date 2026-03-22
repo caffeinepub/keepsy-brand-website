@@ -65,9 +65,8 @@ export default function About() {
               <p>
                 They searched everywhere. Everything felt generic,
                 mass-produced, hollow. So they decided to create it themselves.
-                What started as a personal project in Aman&rsquo;s kitchen
-                became Keepsy — a brand built entirely on the belief that
-                jewelry should mean something.
+                What began as a hobby became Keepsy — a brand built entirely on
+                the belief that jewelry should mean something.
               </p>
               <p>
                 Today, Keepsy crafts premium handmade resin pieces for people
